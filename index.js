@@ -12,8 +12,11 @@ const { checkForAuthenticationCookie } = require("./middleware/authentication");
 const app = express();
 const PORT = 8000;
 
+const {config} = require('dotenv');
+config();
+
 mongoose
-    .connect('mongodb+srv://Rohan:Wkk9AXaXYpfgkvxH@cluster0.wto2koe.mongodb.net/blog')
+    .connect(process.env.url)
     .then((e) => console.log("MongoDb Connected!"));
 
 app.set("view engine", "ejs");
@@ -25,7 +28,7 @@ app.use(checkForAuthenticationCookie('token'));
 app.use(express.static(path.resolve('./public')));
 
 app.get("/", async (req, res) => {
-    const allBlogs = await Blog.find({});
+    const allBlogs = await Blog.find({});                                       
     res.render("home", {
         user: req.user,
         blogs: allBlogs,
