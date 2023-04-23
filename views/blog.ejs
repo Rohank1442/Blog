@@ -13,10 +13,6 @@
         <p mt-3><%= blog.body %></p>
     </div>
 
-    <div class="container mt-4">
-        <img src="<%= blog.createdBy.profileImageUrl %>" width="50px" > <%= blog.createdBy.fullName %>
-    </div>
-
     <div class="container mt-3">
         <h1>Comments (<%= comments.length %>)</h1>
         <% if(locals.user) { %>
