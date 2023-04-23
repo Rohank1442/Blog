@@ -12,7 +12,7 @@ const { checkForAuthenticationCookie } = require("./middleware/authentication");
 const app = express();
 const PORT = 8000;
 
-const {config} = require('dotenv');
+const { config } = require('dotenv');
 config();
 
 mongoose
@@ -22,19 +22,19 @@ mongoose
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(checkForAuthenticationCookie('token'));
 app.use(express.static(path.resolve('./public')));
 
 app.get("/", async (req, res) => {
-    const allBlogs = await Blog.find({});                                       
+    const allBlogs = await Blog.find({});
     res.render("home", {
         user: req.user,
         blogs: allBlogs,
         editing: false
-    });  
+    });
 });
 
 app.use('/user', userRoute);

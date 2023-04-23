@@ -4,6 +4,7 @@ const path = require('path');
 const Blog = require('../models/blog')
 const Comment = require('../models/comment')
 const mongoose = require('mongoose');
+const User = require("../models/user");
 
 const router = Router();
 
@@ -40,7 +41,7 @@ router.post("/edit-blog", upload.single("coverImage"), async (req, res) => {
     console.log(blogId, typeof blogId);
 
     let n;
-    if(blogId[blogId.length-1] === ' ') n = blogId.slice(0, -1);
+    if (blogId[blogId.length - 1] === ' ') n = blogId.slice(0, -1);
     n = blogId;
     console.log(n + 'in')
     try {
@@ -74,12 +75,14 @@ router.get("/edit-blog/:blogId", async (req, res) => {
         console.log(err)
     }
 
+
     if (!blog) {
         return res.redirect("/");
     }
     res.render("addBlog", {
         editing: true,
-        blog: blog
+        blog: blog,
+        user: req.user
     })
 })
 
@@ -99,7 +102,7 @@ router.get('/:id', async (req, res) => {
     const comments = await Comment.find({ blogId: req.params.id }).populate(
         "createdBy"
     );
-    // console.log("comments", comments);
+    console.log("comments", comments);
     return res.render('blog', {
         user: req.user,
         blog,
